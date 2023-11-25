@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+typedef struct Customer
+{
+    int arrival_time;
+    int processing_time;
+}Customer;
+
+Customer queue[1000];
+
+int main() {
+    int front,rear,total_customers,num_windows,i;
+    scanf("%d",&total_customers);
+    front=rear=0;
+    for(i=0;i<total_customers;i++)
+    {
+        scanf("%d%d",&queue[rear].arrival_time,&queue[rear].processing_time);
+        if(queue[rear].processing_time>60)
+            queue[rear].processing_time=60;
+        rear++;
+    }
+    scanf("%d",&num_windows);
+
+    int total_wait_time=0,max_wait_time=0,current_wait_time=0;
+    int completion_times[15]={0},customers_per_window[15]={0};
+
+    while(front<rear)
+    {
+        int no_wait_flag=0,min_completion_time=99999,min_index=0;
+        for(i=0;i<num_windows;i++)
+        {
+            if(completion_times[i]<=queue[front].arrival_time)
+            {
+                completion_times[i]=queue[front].arrival_time+queue[front].processing_time;
+                customers_per_window[i]++;
+                no_wait_flag=1;
+                front++;
+                break;
+            }
+            if(min_completion_time>completion_times[i])
+            {
+                min_completion_time=completion_times[i];
+                min_index=i;
+            }
+        }
+        if(!no_wait_flag)
+        {
+            current_wait_time=min_completion_time-queue[front].arrival_time;
+            if(max_wait_time<current_wait_time)
+                max_wait_time=current_wait_time;
+            total_wait_time+=current_wait_time;
+            completion_times[min_index]=min_completion_time+queue[front].processing_time;
+            customers_per_window[min_index]++;
+            front++;
+        }
+    }
+    int last_completion_time=0;
+    for(i=0;i<num_windows;i++)
+    {
+        if(last_completion_time<completion_times[i])
+            last_completion_time=completion_times[i];
+    }
+    printf("%.1lf %d %d\n",1.0*total_wait_time/total_customers,max_wait_time,last_completion_time);
+    for(i=0;i<num_windows;i++)
+    {
+        printf("%d",customers_per_window[i]);
+        if(i==num_windows-1)
+        {
+            printf("\n");
+        }
+        else
+        {
+            printf(" ");
+        }
+    }
+    return 0;
+}
