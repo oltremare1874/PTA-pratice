@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct que
+{
+    int Data[1000];
+    int Front,Rear;
+};
+typedef struct que *Node;
+typedef Node Queue;
+
+int main() {
+    int n;
+    Queue A=(Queue)malloc(sizeof(struct que));
+    Queue B=(Queue)malloc(sizeof(struct que));
+    A->Rear=B->Rear=A->Front=B->Front=0;
+    scanf("%d",&n);
+    while(n--)
+    {
+        int num;
+        scanf("%d",&num);
+        if(num%2)
+        {
+            A->Data[A->Rear++]=num;
+        }
+        else
+        {
+            B->Data[B->Rear++]=num;
+        }
+    }
+    int flag=0;//控制B空格(A为空)
+    if(A->Data[0])
+        flag=1;
+
+    int i=0;//控制A空格
+    while(A->Front!=A->Rear)
+    {
+        int a2=2;
+        while(a2--&&A->Front!=A->Rear)
+        {
+            if(i++)
+            {
+                printf(" %d",A->Data[A->Front++]);
+            }
+            else
+            {
+                printf("%d",A->Data[A->Front++]);
+            }
+        }
+        if(B->Front!=B->Rear)
+        {
+            printf(" %d",B->Data[B->Front++]);
+        }
+    }
+    while(B->Rear!=B->Front)
+    {
+        if(flag==0)
+        {
+            printf("%d",B->Data[B->Front++]);
+        }
+        else
+        {
+            printf(" %d",B->Data[B->Front++]);
+        }
+    }
+    return 0;
+}
