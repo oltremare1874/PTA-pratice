@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_NODES 31
+
+int postOrder[MAX_NODES], levelOrder[MAX_NODES], currentIndex;
+
+// 递归构建二叉树
+void build(int currentNode, int totalNodes) {
+    levelOrder[currentNode] = postOrder[currentIndex--];
+    if (currentNode * 2 + 1 <= totalNodes) build(currentNode * 2 + 1, totalNodes);
+    if (currentNode * 2 <= totalNodes) build(currentNode * 2, totalNodes);
+}
+
+int main() {
+    int totalNodes;
+    scanf("%d", &totalNodes);
+    currentIndex = totalNodes;
+
+    for (int i = 1; i <= totalNodes; i++) {
+        scanf("%d", &postOrder[i]);
+    }
+
+    build(1, totalNodes);
+
+    for (int i = 1; i <= totalNodes; i++) {
+        printf("%d", levelOrder[i]);
+        if (i != totalNodes) printf(" ");
+    }
+
+    return 0;
+}
