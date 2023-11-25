@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void sort(int a[],int l,int r)
+{
+    int flag=1;
+    for(int i=l;i<=r&&flag;i++)
+    {
+        flag=0;
+        for(int j=l;j<r-(i-l);j++)
+        {
+            if(a[j]>a[j+1])
+            {
+                flag=1;
+                int tem=a[j];
+                a[j]=a[j+1];
+                a[j+1]=tem;
+            }
+        }
+    }
+}
+int main()
+{
+    int n;
+    char cc;
+    scanf("%d",&n);
+    int Huffnum=0,Huffqueue[3000]={0},top=0,q[3000]={0};
+    for(int i=0;i<n;i++)
+    {
+        getchar();
+        scanf("%c%d",&cc,&Huffqueue[top++]);
+        q[top-1]=Huffqueue[top-1];
+    }
+    int head=0;
+    sort(Huffqueue,head,n-1);
+    while(top!=head+1)
+    {
+        int n1=Huffqueue[head];
+        Huffqueue[head]=0;
+        int n2=Huffqueue[++head];
+        Huffqueue[head]=0;
+        Huffqueue[head]=n1+n2;
+        sort(Huffqueue,head,n-1);
+        Huffnum+=n1+n2;
+    }
+    int m;
+    scanf("%d",&m);
+    for(int k=0;k<m;k++)
+    {
+        char code[3000][66]={0};
+        int Ohuffnum=0;
+        for(int i=0;i<n;i++)
+        {
+            getchar();
+            scanf("%c%s",&cc,code[i]);
+            Ohuffnum+=(int)strlen(code[i])*q[i];
+        }
+        if(Ohuffnum!=Huffnum)
+        {
+            printf("No\n");
+        }
+        else if(Ohuffnum==Huffnum)
+        {
+            int flag=1;
+            for(int i=0;i<n;i++)
+            {
+                for(int j=0;j<n&&j!=i;j++)
+                {
+                    if(strlen(code[i])<=strlen(code[j])&&strncmp(code[i],code[j],strlen(code[i]))==0)
+                    {
+                        flag=0;
+                        break;
+                    }
+                    else if(strlen(code[i])>strlen(code[j])&&strncmp(code[i],code[j],strlen(code[j]))==0)
+                    {
+                        flag=0;
+                        break;
+                    }
+                }
+                if(!flag)
+                    break;
+            }
+            if(!flag)
+                printf("No\n");
+            else
+                printf("Yes\n");
+        }
+    }
+    return 0;
+}
