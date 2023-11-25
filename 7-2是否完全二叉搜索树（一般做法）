@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Tnode *Tree;
+struct Tnode
+{
+    int Data;
+    Tree Left,Right;
+};
+Tree insert(Tree BST,int x)//插入
+{
+    if(!BST)
+    {
+        BST=(Tree)malloc(sizeof(struct Tnode));
+        BST->Data=x;
+        BST->Left=BST->Right=NULL;
+    }
+    if(x<BST->Data)
+        BST->Right=insert(BST->Right,x);
+    else if(x>BST->Data)
+        BST->Left=insert(BST->Left,x);
+    return BST;
+}
+void levelorderout(Tree BST)//层序遍历输出
+{
+    Tree current,queue[20];
+    int front=0,rear=0,isFirstNode=0;
+    queue[rear++]=BST;
+    while(front!=rear)
+    {
+        current=queue[front++];
+        if(!isFirstNode++)
+            printf("%d",current->Data);
+        else
+            printf(" %d",current->Data);
+        if(current->Left)
+            queue[rear++]=current->Left;
+        if(current->Right)
+            queue[rear++]=current->Right;
+    }
+}
+void judge(Tree BST)//层序遍历，分条件判断
+{
+    Tree current,queue[20];
+    int front=0,rear=0,flag=0;
+    queue[rear++]=BST;
+    while(front!=rear)
+    {
+        current=queue[front++];
+        if(current->Left)
+            queue[rear++]=current->Left;
+        if(current->Right)
+            queue[rear++]=current->Right;
+        if(!current->Left&&current->Right)//左无右有
+        {
+            printf("\nNO");
+            return;
+        }
+        if((current->Left&&!current->Right)||(!current->Left&&!current->Right))//层中出现空缺，判断之后是否全是空缺
+        {
+            flag=1;
+        }
+        while(flag==1&&front!=rear)
+        {
+            current=queue[front++];
+            if(current->Left||current->Right)
+            {
+                printf("\nNO");
+                return;
+            }
+        }
+
+    }
+    printf("\nYES");
+}
+int main()
+{
+    int n,x;
+    Tree BST=NULL;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&x);
+        BST=insert(BST,x);
+    }
+    levelorderout(BST);
+    judge(BST);
+    return 0;
+}
