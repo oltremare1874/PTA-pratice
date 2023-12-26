@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define ERROR NULL
+//链表相关操作
+typedef enum{false,true}bool;
+typedef int ElementType;
+typedef struct LNode *PtrToLNode;
+
+struct LNode{
+    ElementType Data;
+    PtrToLNode Next;
+};
+
+typedef PtrToLNode Position;
+typedef PtrToLNode List;
+
+List MakeEmpty()//创建带头节点的空链表
+{
+    List L=(List)malloc(sizeof(struct LNode));
+    L->Next=NULL;
+    return L;
+}
+
+Position Find(List L,ElementType X)//查找
+{
+    L=L->Next;
+    while(L!=NULL)
+    {
+        if(L->Data==X)
+            return L;
+        L=L->Next;
+    }
+    return ERROR;
+}
+
+bool Insert(List L,ElementType X,Position P)
+{
+    List x;
+    x=MakeEmpty();
+    x->Data=X;
+    针对不带头节点
+    /*
+    if(P==NULL)
+    {
+        x->Next=L;
+        L=x;
+        return true;
+    }
+    */
+
+    List tmp=L;
+    while(tmp!=NULL)
+    {
+        if(tmp->Next==P)//插入P之前
+        {
+            x->Next=P;
+            tmp->Next=x;
+            return true;
+        }
+        tmp=tmp->Next;
+    }
+    printf("Wrong Position for Insertion\n");
+    return false;
+}
+
+bool Delete(List L,Position P)
+{
+    if(L==P)
+    {
+        L=L->Next;
+        return true;
+    }
+    while(L!=NULL)
+    {
+        if(L->Next==P)
+        {
+            L->Next=P->Next;
+            return true;
+        }
+        L=L->Next;
+    }
+    printf("Wrong Position for Deletion\n");
+	return false;
+}
+
+List Reverse(List L)
+{
+    List prev=NULL;
+    List next=NULL;
+    while(L!=NULL)
+    {
+        next=L->Next;
+        L->Next=prev;
+        prev=L;
+        L=next;
+    }
+    return prev;
+}
+
+//双链表
+
+//多项式
+
+int main()
+{
+
+    return 0;
+}
