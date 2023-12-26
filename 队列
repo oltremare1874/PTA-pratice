@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define ERROR NULL
+//循环队列
+typedef int ElementType;
+typedef enum{false,true}bool;
+//队列相关操作
+/*
+typedef struct Queue
+{
+    ElementType *data;
+    int front,rear;
+    int maxsize;
+}*Queue;
+
+Queue CreatQueue(int maxsize)
+{
+    Queue q=(Queue)malloc(sizeof(struct Queue));
+    q->data=(ElementType*)malloc(maxsize*sizeof(ElementType));
+    q->front=0;
+    q->rear=0;
+    q->maxsize=maxsize;
+    return q;
+}
+bool AddQueue(Queue q,ElementType x)
+{
+    if((q->rear+1)%q->maxsize==q->front)
+    {
+        printf("FULL");
+        return false;
+    }
+    else
+    {
+        q->data[q->rear]=x;
+        q->rear=(q->rear+1)%q->maxsize;
+        return true;
+    }
+}
+ElementType DeQueue(Queue q)
+{
+    if(q->front==q->rear)
+    {
+        printf("EMPTY");
+        return false;
+    }
+    else
+    {
+        ElementType tmp=q->data[q->front];
+        q->front=(q->front+1)%q->maxsize;
+        return tmp;
+    }
+}
+*/
+
+
+//链表队列
+typedef struct Node *PtrToNode;
+struct Node
+{
+    ElementType Data;
+    PtrToNode Next;
+};
+
+typedef struct QNode *Queue;
+struct QNode
+{
+    PtrToNode front,rear;
+    int maxsize;
+};
+
+int AddQ(Queue Q,ElementType X)
+{
+    PtrToNode newNode=(PtrToNode)malloc(sizeof(struct Node));
+    newNode->Data=X;
+    newNode->Next=NULL;
+    if(Q->front==NULL)
+    {
+        Q->front=newNode;
+        Q->rear=newNode;
+    }
+    else
+    {
+        Q->rear->Next=newNode;
+        Q->rear=newNode;
+    }
+    return true;
+}
+
+ElementType DeQueue(Queue Q)
+{
+    if(Q->front==NULL)
+    {
+        printf("EMPTY");
+        return false;
+    }
+    PtrToNode tmp=Q->front;
+    ElementType frontElem=tmp->Data;
+    if(Q->front==Q->rear)
+        Q->front=Q->rear=NULL;
+    else
+        Q->front=Q->front->Next;
+    return frontElem;
+}
+int main()
+{
+
+    return 0;
+}
