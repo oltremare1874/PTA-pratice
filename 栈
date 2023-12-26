@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define ERROR NULL
+//循环队列
+typedef int ElementType;
+typedef enum{false,true}bool;
+#define MAXSIZE 100
+//顺序栈(基于数组)
+
+typedef struct SNode
+{
+    ElementType Data[MAXSIZE];
+    int top;
+    int MaxSize;
+}*Stack;
+
+Stack CreatStack(int maxSize)
+{
+    Stack s=(Stack)malloc(sizeof(struct Snode));
+    s->top=-1;
+    s->MaxSize=maxSize;
+    return s;
+}
+
+bool Push(Stack s,ElementType X)
+{
+    if(s->top==s->MaxSize-1)
+    {
+        printf("Stack Full");
+        return false;
+    }
+    s->Data[++(s->top)]=X;
+    return true;
+}
+
+ElementType Pop(Stack s)
+{
+    if(s->top==-1)
+    {
+        printf("Stack Empty");
+        return false;
+    }
+    return s->Data[s->top--];
+}
+
+//链表栈(基于链表)
+typedef struct LNode
+{
+    ElementType data;
+    struct LNode *next;
+}*Stack;
+
+Stack CreatStack()
+{
+    Stack s=(Stack)malloc(sizeof(struct LNode));
+    s->next=NULL;
+    return s;
+}
+
+void Push(Stack s,ElementType X)
+{
+    struct LNode *newNode=(struct LNode*)malloc(sizeof(struct Lnode));
+    newNode->data=X;
+    newNode->next=s->next;
+    s->next=newNode;
+}
+
+void Pop(Stack s)
+{
+    if(s->next==nullptr)
+    {
+        printf("Stack Empty");
+        return false;
+    }
+    struct LNode *tmp=s->next;
+    ElementType topData=tmp->data;
+    s->next=tmp->next;
+    return topData;
+}
+int main()
+{
+
+    return 0;
+}
