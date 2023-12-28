@@ -1,0 +1,83 @@
+BinTree Insert( BinTree BST, ElementType X )
+{
+    if(BST==NULL)
+    {
+        BST=(BinTree)malloc(sizeof(struct TNode));
+        BST->Data=X;
+        BST->Left=BST->Right=NULL;
+    }
+    else
+    {
+        if(X<BST->Data)
+            BST->Left=Insert(BST->Left,X);
+        else if(X>BST->Data)
+            BST->Right=Insert(BST->Right,X);
+    }
+    return BST;
+}
+BinTree Delete( BinTree BST, ElementType X )
+{
+    Position tmp;
+    if(BST==NULL)
+        printf("Not Found\n");
+    else
+    {
+        if(X<BST->Data)
+            BST->Left=Delete(BST->Left,X);
+        else if(X>BST->Data)
+            BST->Right=Delete(BST->Right,X);
+        else
+        {
+            if(BST->Left!=NULL&&BST->Right!=NULL)
+            {
+                tmp=FindMin(BST->Right);
+                BST->Data=tmp->Data;
+                BST->Right=Delete(BST->Right,BST->Data);
+            }
+            else
+            {
+                tmp=BST;
+                if(BST->Left==NULL)
+                {
+                    BST=BST->Right;
+                }
+                else
+                {
+                    BST=BST->Left;
+                }
+            }
+        }
+    }
+    return BST;
+
+}
+Position Find( BinTree BST, ElementType X )
+{
+    if(BST==NULL)
+        return NULL;
+    else if(X>BST->Data)
+        return Find(BST->Right,X);
+    else if(X<BST->Data)
+        return Find(BST->Left,X);
+    else 
+        return BST;
+    return BST;
+}
+Position FindMin( BinTree BST )
+{
+    if(BST==NULL)
+        return BST;
+    else if(BST->Left==NULL)
+        return BST;
+    else
+        return FindMin(BST->Left);
+}
+Position FindMax( BinTree BST )
+{
+    if(BST==NULL)
+        return BST;
+    else if(BST->Right==NULL)
+        return BST;
+    else
+        return FindMax(BST->Right);
+}
