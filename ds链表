@@ -84,7 +84,7 @@ bool Delete(List L,Position P)
 	return false;
 }
 
-List Reverse(List L)
+List Reverse(List L)//不带头节点
 {
     List prev=NULL;
     List next=NULL;
@@ -97,6 +97,27 @@ List Reverse(List L)
     }
     return prev;
 }
+/*
+//带头节点
+List Reverse( List L )
+{
+    if(!L||!L->Next||!L->Next->Next)
+        return L;
+        
+    List prev=NULL;
+    List next=NULL;
+    List tmp=L->Next;
+    while(tmp!=NULL)
+    {
+        next=tmp->Next;
+        tmp->Next=prev;
+        prev=tmp;
+        tmp=next;
+    }
+    L->Next=prev;
+    return L;
+}
+*/
 
 //双链表
 
